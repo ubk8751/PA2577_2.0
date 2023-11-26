@@ -13,7 +13,7 @@ API_PORT = 5000
 if os.path.isfile("/var/run/secrets/kubernetes.io/serviceaccount/token"):
     API_IP = os.environ.get("KUBERNETES_SERVICE_HOST")
 else:
-    API_IP = os.environ.get('DB_HOST') # <------------------------------------------------
+    API_IP = os.environ.get('API_HOST') # <------------------------------------------------
 
 API_URL = f'http://{API_IP}:{API_PORT}'
 
@@ -23,9 +23,9 @@ def index():
 
 @app.route('/fetch_data')
 def fetch_data():
-    response = requests.get(API_URL)
+    response = requests.get(f'{API_URL}/users')
     data = response.json() if response.status_code == 200 else {'error': 'Failed to fetch data'}
     return render_template('result.html', data=data)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=80, debug=True)

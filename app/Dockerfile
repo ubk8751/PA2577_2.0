@@ -1,8 +1,13 @@
-FROM python:3.10-slim
+FROM python:3.10
 
 WORKDIR /app
 
-COPY . /app
+COPY . .
+
+RUN apt-get update \
+    && apt-get -y install libpq-dev gcc \
+    && pip install psycopg2
+RUN pip install --upgrade setuptools
 
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
