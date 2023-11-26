@@ -1,10 +1,21 @@
 from flask import Flask, render_template
 import requests
+import socket
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='ui/templates')
 
-# Replace this URL with your Flask API endpoint
-API_URL = 'http://<EXTERNAL-IP>:5000'  # Replace <EXTERNAL-IP> with the actual external IP
+# Get the internal IP of the Flask API service using its service name
+API_SERVICE_NAME = 'flask-app-service'
+API_PORT = 5000
+
+# Check if running inside a Kubernetes cluster
+if os.path.isfile("/var/run/secrets/kubernetes.io/serviceaccount/token"):
+    API_IP = os.environ.get("KUBERNETES_SERVICE_HOST")
+else:
+    API_IP = os.environ.get('DB_HOST') # <------------------------------------------------
+
+API_URL = f'http://{API_IP}:{API_PORT}'
 
 @app.route('/')
 def index():

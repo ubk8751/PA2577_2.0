@@ -14,10 +14,12 @@ spec:
     spec:
       containers:
       - name: flask-app
-        image: flask-app:latest
+        image: ubk8751/flask-app:latest 
+        imagePullPolicy: Always
         env:
         - name: DATABASE_URI
           value: postgresql://myuser:mypassword@postgresql/mydatabase
+        command: ["/bin/sh", "-c", "echo Hello from Flask App; sleep infinity"]
       volumes:
       - name: postgres-persistent-storage
         persistentVolumeClaim:

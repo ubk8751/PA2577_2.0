@@ -1,0 +1,27 @@
+PA2577_2.0/
+    .gitattributes
+    .gitignore
+    docker-compose.yaml
+    folder_structure.txt
+    Makefile
+    treegen.py
+    app/
+        Dockerfile
+        requirements.txt
+        src/
+            app.py
+            api/
+                api.py
+                models.py
+                __init__.py
+            ui/
+                static/
+                    style.css
+                templates/
+                    index.html
+                    result.html
+    kubernetes/
+        flaskapp-deployment.yaml
+        persistent-volume.yaml
+        postgresql-deployment.yaml
+        secrets.yaml

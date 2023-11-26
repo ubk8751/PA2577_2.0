@@ -1,12 +1,13 @@
-FROM python:3.8-slim
+FROM python:3.10-slim
 
 WORKDIR /app
 
-COPY requirements.txt /app/requirements.txt
-RUN pip install -r requirements.txt
+COPY . /app
 
-COPY src /app/src
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 EXPOSE 5000
+
+ENV NAME app
 
 CMD ["python", "src/app.py"]
