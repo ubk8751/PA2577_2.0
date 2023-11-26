@@ -4,7 +4,7 @@ services:
   flask-app:
     build:
       context: ./app
-      dockerfile: Dockerfile
+      dockerfile: ./src/api/Dockerfile
     container_name: flask_app        # Denna e viktig
     environment:
       DB_HOST: postgresql_db         # Sätter vår DB_HOST env till att peka till postgresql_db
@@ -25,13 +25,13 @@ services:
 
   flask-ui:
     build:
-      context: ./app/ui
+      context: ./app
       dockerfile: Dockerfile
     container_name: flask_ui
     environment:
       API_HOST: flask_app
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
       - flask-app
     extra_hosts:
