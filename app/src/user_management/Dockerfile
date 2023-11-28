@@ -6,8 +6,7 @@ COPY . .
 RUN apt-get update \
     && apt-get -y install libpq-dev gcc \
     && pip install psycopg2
-RUN pip install --upgrade setuptools
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 5001
 

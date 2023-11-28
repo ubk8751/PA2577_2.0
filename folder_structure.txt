@@ -1,27 +1,38 @@
-PA2577_2.0/
-    .gitattributes
+PA2577_assignment_1/
+    folder_structure.txt
     .gitignore
     docker-compose.yaml
-    folder_structure.txt
-    Makefile
+    .gitattributes
     treegen.py
+    Dockerfile
+    Makefile
+    kubernetes/
+        flaskapp-deployment.yaml
+        secrets.yaml
+        persistent-volume.yaml
+        postgresql-deployment.yaml
     app/
         Dockerfile
         requirements.txt
         src/
             app.py
-            api/
-                api.py
-                models.py
-                __init__.py
+            __init__.py
             ui/
+                templates/
+                    users.html
+                    tasks.html
+                    index.html
                 static/
                     style.css
-                templates/
-                    index.html
-                    result.html
-    kubernetes/
-        flaskapp-deployment.yaml
-        persistent-volume.yaml
-        postgresql-deployment.yaml
-        secrets.yaml
+            user_management/
+                models.py
+                Dockerfile
+                user.py
+                __init__.py
+            api/
+                models.py
+                api.py
+                Dockerfile
+                __init__.py
+                __pycache__/
+                    models.cpython-310.pyc

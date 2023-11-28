@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: falsk-api
+  name: flask-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: falsk-api
+      app: flask-api
   template:
     metadata:
       labels:
-        app: falsk-api
+        app: flask-api
     spec:
       containers:
-      - name: falsk-api
-        image: ubk8751/falsk-api:latest 
+      - name: flask-api
+        image: ubk8751/flask-api:latest 
         imagePullPolicy: Always
         env:
         - name: DATABASE_URI
@@ -28,12 +28,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: falsk-api-service
+  name: flask-api-service
 spec:
   ports:
   - port: 5000
     protocol: TCP
     targetPort: 5000
   selector:
-    app: falsk-api
+    app: flask-api
   type: LoadBalancer

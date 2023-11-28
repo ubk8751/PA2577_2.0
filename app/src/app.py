@@ -1,13 +1,14 @@
 from flask import Flask, render_template
 import requests
 import os
+import time
 
 from api.models import Task
 
 app = Flask(__name__, template_folder='ui/templates', static_folder='ui/static')
 
 # Get the internal IP of the Flask API service using its service name
-API_SERVICE_NAME = 'falsk-api-service'
+API_SERVICE_NAME = 'flask-api-service'
 API_PORT = 5000
 
 # Check if running inside a Kubernetes cluster
@@ -29,4 +30,5 @@ def fetch_data():
     return render_template('result.html', data=data)
 
 if __name__ == '__main__':
+    time.sleep(10)
     app.run(host='0.0.0.0', port=80, debug=True)

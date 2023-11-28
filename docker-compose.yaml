@@ -1,17 +1,18 @@
 version: '3'
 
 services:
-  falsk-api:
+  flask-api:
     build:
       context: ./app
       dockerfile: ./src/api/Dockerfile
-    container_name: falsk_api
+    container_name: flask_api
     environment:
       DB_HOST: postgresql_db
     ports:
       - "5000:5000"
     depends_on:
-      - postgresql
+      postgresql:
+        condition: service_healthy
     
   flask-user-management:
     build:
@@ -23,7 +24,8 @@ services:
     ports:
       - "5001:5001"
     depends_on:
-      - postgresql
+      postgresql:
+        condition: service_healthy
 
   flask-ui:
     build:
@@ -31,11 +33,11 @@ services:
       dockerfile: Dockerfile
     container_name: flask_ui
     environment:
-      API_HOST: falsk_api
+      API_HOST: flask_api
     ports:
       - "8080:80"
     depends_on:
-      - falsk-api
+      - flask-api
       - flask-user-management
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -49,3 +51,8 @@ services:
       POSTGRES_DB: database
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d database"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
