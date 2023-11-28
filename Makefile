@@ -1,43 +1,22 @@
-.PHONY: help build deploy run stop clean create
+build-ui:
+	docker-compose build flask-ui
 
-# Combined targets
-all: build deploy
-allrun: build run
+build-app:
+	docker-compose build flask-app
 
-# Build targets
-build:
-	docker build -t flask-app -f ./app/Dockerfile ./app
+build-db:
+	docker-compose build postgresql
 
-# Deploy targets
-deploy:
-	kubectl apply -f ./kubernetes/secrets.yaml
-	kubectl apply -f ./kubernetes/persistent-volume.yaml
-	kubectl apply -f ./kubernetes/postgresql-deployment.yaml
-	kubectl apply -f ./kubernetes/flaskapp-deployment.yaml
-# kubectl get svc -w
+build-all:
+	docker-compose build
 
-# Run the application locally
-run:
-	kubectl port-forward service/flask-app-service 5000:5000 & python app/src/app.py
+build: build-ui build-app build-db
 
-# Stop the running containers
+rebuild:
+	docker-compose build --no-cache
+
+up:
+	docker-compose up --build
+
 stop:
 	docker-compose down
-
-# Clean up deployed resources
-clean:
-	kubectl delete -f ./kubernetes/secrets.yaml
-	kubectl delete -f ./kubernetes/postgresql-deployment.yaml
-	kubectl delete -f ./kubernetes/flaskapp-deployment.yaml
-	kubectl delete -f ./kubernetes/persistent-volume.yaml
-# pkill -f 'kubectl port-forward'
-
-# Display help message
-help:
-	@echo "Available targets:"
-	@echo "  - build: Build the Docker image for the Flask app."
-	@echo "  - deploy: Deploy the application on Kubernetes."
-	@echo "  - run: Run the application locally using kubectl port-forward."
-	@echo "  - stop: Stop the kubectl port-forward process."
-	@echo "  - clean: Clean up deployed resources on Kubernetes."
-	@echo "  - create: Build and deploy the application."

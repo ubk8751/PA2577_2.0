@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Tasks</title>
+</head>
+<body>
+    <h1>Task Management</h1>
+
+    <!-- Add Task Form -->
+    <h2>Add Task</h2>
+    <form method="POST" action="/tasks/add">
+        <label for="task">Task:</label>
+        <input type="text" name="task" required><br>
+        <label for="description">Description:</label>
+        <input type="text" name="description" required><br>
+        <button type="submit">Add Task</button>
+    </form>
+
+    <!-- Display Tasks -->
+    <h2>Task List</h2>
+    {% if tasks %}
+        <ul>
+            {% for task in tasks %}
+                <li>
+                    <strong>Task:</strong> {{ task.task }}<br>
+                    <strong>Description:</strong> {{ task.description }}
+                    <form method="POST" action="/tasks/delete/{{ task.id }}" style="display:inline;">
+                        <button type="submit">Delete Task</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tasks available.</p>
+    {% endif %}
+
+   <a href="/">Go back to Home</a>
+</body>
+</html>
