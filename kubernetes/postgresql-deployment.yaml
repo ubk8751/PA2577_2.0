@@ -17,7 +17,7 @@ spec:
           image: 'postgres:latest'
           envFrom:
             - secretRef:
-                name: flask-app-secrets
+                name: falsk-api-secrets
           ports:
             - containerPort: 5432
           volumeMounts:

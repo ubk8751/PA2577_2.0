@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, render_template, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 import os
 
 from models import db, User, Task
@@ -16,7 +17,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 db.init_app(app)
 
 with app.app_context():
-    
+    db.session.execute(text('DROP TABLE IF EXISTS "user", "task" CASCADE'))
     db.create_all()
 
 @app.route('/')
@@ -54,22 +55,6 @@ def delete_task(task_id):
     db.session.commit()
     flash('Task deleted successfully.')
     return redirect('/tasks')
-
-@app.route('/users', methods=['GET'])
-def get_users():
-    users = User.query.all()
-    user_list = []
-    for user in users:
-        user_list.append({'username': user.username, 'email': user.email})
-    return jsonify({'users': user_list})
-
-@app.route('/users', methods=['POST'])
-def create_user():
-    data = request.get_json()
-    new_user = User(username=data['username'], email=data['email'])
-    db.session.add(new_user)
-    db.session.commit()
-    return jsonify({'message': 'User created successfully!'})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

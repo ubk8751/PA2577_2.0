@@ -1,6 +1,5 @@
 from flask import Flask, render_template
 import requests
-import socket
 import os
 
 from api.models import Task
@@ -8,7 +7,7 @@ from api.models import Task
 app = Flask(__name__, template_folder='ui/templates', static_folder='ui/static')
 
 # Get the internal IP of the Flask API service using its service name
-API_SERVICE_NAME = 'flask-app-service'
+API_SERVICE_NAME = 'falsk-api-service'
 API_PORT = 5000
 
 # Check if running inside a Kubernetes cluster

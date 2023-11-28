@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Add User</title>
+</head>
+<body>
+    <h1>Add User</h1>
+    <form method="POST" action="/users">
+        <label for="username">Username:</label>
+        <input type="text" name="username" required><br>
+        <label for="email">Email:</label>
+        <input type="email" name="email" required><br>
+        <label for="password">Password:</label>
+        <input type="password" name="password" required><br>
+        <button type="submit">Add User</button>
+    </form>
+    <a href="/">Go back to Home</a>
+    <!-- Button to open the user list modal -->
+    <button onclick="openUserListModal()">User List</button>
+
+    <!-- The user list modal -->
+    <div id="userListModal" class="modal">
+        <div class="modal-content">
+            <span onclick="closeUserListModal()" style="float: right; cursor: pointer;">&times;</span>
+            <h2>User List</h2>
+            <!-- Div to dynamically populate with user names using JavaScript -->
+            <div id="userListContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript functions to handle modal functionality
+        function openUserListModal() {
+            // Make an AJAX request to get the user data
+            fetch('/users')
+                .then(response => response.json())
+                .then(users => {
+                    // Construct HTML for user list
+                    const userListContent = users.map(user => `${user.username}<br>`).join('');
+                    // Populate the modal content
+                    document.getElementById('userListContent').innerHTML = userListContent;
+                    // Display the modal
+                    document.getElementById('userListModal').style.display = 'block';
+                })
+                .catch(error => console.error('Error fetching user data:', error));
+        }
+
+        function closeUserListModal() {
+            // Close the modal
+            document.getElementById('userListModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

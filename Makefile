@@ -2,7 +2,7 @@ build-ui:
 	docker-compose build flask-ui
 
 build-app:
-	docker-compose build flask-app
+	docker-compose build falsk-api
 
 build-db:
 	docker-compose build postgresql
