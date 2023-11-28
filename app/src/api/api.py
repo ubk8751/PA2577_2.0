@@ -4,7 +4,7 @@ import os
 
 from models import db, User, Task
 
-app = Flask(__name__, template_folder='../ui/templates')
+app = Flask(__name__, template_folder='../ui/templates', static_folder='../ui/static')
 
 DB_HOST = os.environ.get('DB_HOST', 'localhost')
 DB_PORT = os.environ.get('DB_PORT', '5432')

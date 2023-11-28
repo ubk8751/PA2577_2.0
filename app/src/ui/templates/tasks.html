@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Manage Tasks</title>
 </head>
 <body>
@@ -21,17 +22,28 @@
     <!-- Display Tasks -->
     <h2>Task List</h2>
     {% if tasks %}
-        <ul>
-            {% for task in tasks %}
-                <li>
-                    <strong>Task:</strong> {{ task.task }}<br>
-                    <strong>Description:</strong> {{ task.description }}
-                    <form method="POST" action="/tasks/delete/{{ task.id }}" style="display:inline;">
-                        <button type="submit">Delete Task</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.task }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>
+                            <form method="POST" action="/tasks/delete/{{ task.id }}" style="display:inline;">
+                                <button type="submit">Delete Task</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     {% else %}
         <p>No tasks available.</p>
     {% endif %}

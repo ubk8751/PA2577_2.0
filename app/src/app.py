@@ -5,7 +5,7 @@ import os
 
 from api.models import Task
 
-app = Flask(__name__, template_folder='ui/templates')
+app = Flask(__name__, template_folder='ui/templates', static_folder='ui/static')
 
 # Get the internal IP of the Flask API service using its service name
 API_SERVICE_NAME = 'flask-app-service'
