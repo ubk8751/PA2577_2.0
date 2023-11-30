@@ -190,7 +190,7 @@ def delete_task(task_id):
         str: Redirects to the index page.
     """
     user_id = session.get('user_id')
-    app.logger.info(f'ID: {user_id}, TID: {task_id}')
+    
     if user_id is None:
         flash('Please log in to add a task.')
         return redirect(url_for('login'))
