@@ -9,7 +9,7 @@ RUN apt-get update \
 RUN pip install --no-cache-dir -r requirements.txt
 
 
-EXPOSE 5000
+EXPOSE 5002
 
 ENV NAME api
 

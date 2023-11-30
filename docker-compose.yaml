@@ -8,8 +8,9 @@ services:
     container_name: flask_api
     environment:
       DB_HOST: postgresql_db
+      UM_HOST: user_management
     ports:
-      - "5000:5000"
+      - "5002:5002"
     depends_on:
       postgresql:
         condition: service_healthy
@@ -21,6 +22,7 @@ services:
     container_name: user_management
     environment:
       DB_HOST: postgresql_db
+      API_HOST: flask_api
     ports:
       - "5001:5001"
     depends_on:
@@ -30,12 +32,13 @@ services:
   flask-ui:
     build:
       context: ./app
-      dockerfile: Dockerfile
+      dockerfile: ./src/Dockerfile
     container_name: flask_ui
     environment:
       API_HOST: flask_api
+      UM_HOST: user_management
     ports:
-      - "8080:80"
+      - "5000:5000"
     depends_on:
       - flask-api
       - flask-user-management
