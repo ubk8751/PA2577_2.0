@@ -20,3 +20,4 @@ up:
 
 stop:
 	docker-compose down
+	docker system prune -f
