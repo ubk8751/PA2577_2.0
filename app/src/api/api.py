@@ -75,6 +75,7 @@ def get_tasks():
     """
     tasks = Task.query.all()
     return jsonify({'tasks': [{
+        'id': task.id,
         'task': task.task,
         'description': task.description
     } for task in tasks]}), 200

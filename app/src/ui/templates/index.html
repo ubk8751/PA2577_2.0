@@ -16,6 +16,13 @@
     <title>Manage Tasks</title>
 </head>
 <body>
+    {% with messages = get_flashed_messages() %}  
+        {% if messages %}  
+            {% for message in messages %}  
+                <p>{{ message }}</p>  
+           {% endfor %}  
+        {% endif %}  
+    {% endwith %} 
     <h1>Task Management</h1>
 
     <!-- Add Task Form -->
@@ -30,10 +37,11 @@
 
     <!-- Display Tasks -->
     <h2>Task List</h2>
-    {% if tasks and tasks.tasks %}
+    {% if tasks %}
         <table>
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Task</th>
                     <th>Description</th>
                 </tr>
@@ -45,7 +53,7 @@
                         <td>{{ task.description }}</td>
                         <td>
                             <form method="POST" action="/tasks/delete/{{ task.id }}" style="display:inline;">
-                                <button type="submit">Delete Task</button>
+                                <button type="submit">Complete</button>
                             </form>
                         </td>
                     </tr>

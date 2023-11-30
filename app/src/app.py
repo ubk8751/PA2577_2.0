@@ -97,8 +97,12 @@ def index():
     """
     if 'user_id' not in session:
         flash('Please log in.')
-    return render_template('index.html')
-
+        return render_template('login.html')
+    response_tasks = requests.get(f'{API_URL}/tasks', timeout=5)
+    if response_tasks.status_code == 200:
+        tasks = response_tasks.json().get('tasks', []) if response_tasks.status_code == 200 else []
+        return render_template('index.html', tasks=tasks)
+    return render_template('index.html', tasks=[])
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -144,30 +148,10 @@ def register():
             timeout=5)
         if response.status_code == 200:
             flash('User added successfully.')
-            return redirect('/login')
+            return redirect(url_for('login'))
         flash('Failed to add user.')
 
     return render_template('register.html')
-
-
-@app.route('/tasks', methods=['GET'])
-def get_tasks():
-    """
-    Display user tasks.
-
-    Returns:
-        str: Rendered HTML for the index page with tasks.
-    """
-    if 'user_id' not in session:
-        flash('Please log in to view tasks.')
-        return redirect('/login')
-    response = requests.get(f'{API_URL}/tasks', timeout=5)
-
-    if response.status_code == 200:
-        tasks = response.json().get('tasks', [])
-        return render_template('index.html', tasks=tasks)
-    flash('Failed to retrieve tasks.')
-    return render_template('index.html', tasks=[])
 
 @app.route('/tasks/add', methods=['POST'])
 def add_task():
@@ -181,7 +165,7 @@ def add_task():
 
     if user_id is None:
         flash('Please log in to add a task.')
-        return redirect('/login')
+        return redirect(url_for('login'))
 
     content = {
         'task': request.form['task'],
@@ -189,17 +173,13 @@ def add_task():
     }
 
     data = {'user': user_id, 'content': content}
-
     response = requests.post(f'{API_URL}/tasks/add', json=data, timeout=5)
 
     if response.status_code == 200:
         flash('Task added successfully.')
-        response_tasks = requests.get(f'{API_URL}/tasks', timeout=5)
-        tasks = response_tasks.json().get('tasks', []) if response_tasks.status_code == 200 else []
-        app.logger.info("Updated Tasks: %s", tasks)
-    else:  
-        flash('Failed to add the task.')
-    return render_template('index.html', tasks=tasks)
+        return redirect(url_for('index'))
+    flash('Failed to add the task.')
+    return redirect(url_for('index'))
 
 @app.route('/tasks/delete/<int:task_id>', methods=['GET', 'POST'])
 def delete_task(task_id):
@@ -209,12 +189,18 @@ def delete_task(task_id):
     Returns:
         str: Redirects to the index page.
     """
+    user_id = session.get('user_id')
+    app.logger.info(f'ID: {user_id}, TID: {task_id}')
+    if user_id is None:
+        flash('Please log in to add a task.')
+        return redirect(url_for('login'))
+    
     response = requests.post(f'{API_URL}/tasks/delete/{task_id}', timeout=5)
     if response.status_code == 200:
-        flash('Task added successfully.')
+        flash('Task removed successfully.')
     else:
-        flash('Failed to add the task.')
-    return redirect('/')
+        flash('Failed to remove the task.')
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
