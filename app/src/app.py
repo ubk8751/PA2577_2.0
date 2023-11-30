@@ -100,9 +100,11 @@ def index():
         return render_template('login.html')
     response_tasks = requests.get(f'{API_URL}/tasks', timeout=5)
     if response_tasks.status_code == 200:
-        tasks = response_tasks.json().get('tasks', []) if response_tasks.status_code == 200 else []
+        tasks = response_tasks.json().get(
+            'tasks', []) if response_tasks.status_code == 200 else []
         return render_template('index.html', tasks=tasks)
     return render_template('index.html', tasks=[])
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -153,6 +155,7 @@ def register():
 
     return render_template('register.html')
 
+
 @app.route('/tasks/add', methods=['POST'])
 def add_task():
     """
@@ -181,6 +184,7 @@ def add_task():
     flash('Failed to add the task.')
     return redirect(url_for('index'))
 
+
 @app.route('/tasks/delete/<int:task_id>', methods=['GET', 'POST'])
 def delete_task(task_id):
     """
@@ -190,11 +194,11 @@ def delete_task(task_id):
         str: Redirects to the index page.
     """
     user_id = session.get('user_id')
-    
+
     if user_id is None:
         flash('Please log in to add a task.')
         return redirect(url_for('login'))
-    
+
     response = requests.post(f'{API_URL}/tasks/delete/{task_id}', timeout=5)
     if response.status_code == 200:
         flash('Task removed successfully.')

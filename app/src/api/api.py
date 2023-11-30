@@ -101,7 +101,12 @@ def add_task():
 
     tasks = Task.query.all()
     print(tasks)
-    return jsonify({'message': 'Task added successfully', 'tasks': [{'id': task.id, 'task': task.task, 'description': task.description} for task in tasks]}), 200
+    return jsonify({'message': 'Task added successfully',
+                    'tasks': [{'id': task.id,
+                               'task': task.task,
+                               'description': task.description}
+                              for task in tasks]}), 200
+
 
 @app.route('/tasks/delete/<int:task_id>', methods=['GET', 'POST'])
 def delete_task(task_id):
