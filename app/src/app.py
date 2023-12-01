@@ -65,24 +65,17 @@ def load_user(user_id):
     return None
 
 
-UM_SERVICE_NAME = 'user_management-service'
+UM_SERVICE_NAME = 'user-management-service'
 UM_PORT = 5001
 
-if os.path.isfile("/var/run/secrets/kubernetes.io/serviceaccount/token"):
-    UM_IP = os.environ.get("KUBERNETES_SERVICE_HOST")
-else:
-    UM_IP = os.environ.get('UM_HOST')
+UM_IP = os.environ.get('UM_HOST')
 
 UM_URL = f'http://{UM_IP}:{UM_PORT}'
 
 API_SERVICE_NAME = 'flask-api-service'
 API_PORT = 5002
 
-# Check if running inside a Kubernetes cluster
-if os.path.isfile("/var/run/secrets/kubernetes.io/serviceaccount/token"):
-    API_IP = os.environ.get("KUBERNETES_SERVICE_HOST")
-else:
-    API_IP = os.environ.get('API_HOST')
+API_IP = os.environ.get('API_HOST')
 
 API_URL = f'http://{API_IP}:{API_PORT}'
 

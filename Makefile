@@ -18,6 +18,14 @@ rebuild:
 up:
 	docker-compose up --build
 
+deploy:
+	kubectl apply -f ./kubernetes/postgres-deployment.yaml
+	kubectl apply -f ./kubernetes/postgres-pvc-pv.yaml
+	kubectl apply -f ./kubernetes/flask-ui-deployment.yaml
+	kubectl apply -f ./kubernetes/flask-user-management-deployment.yaml
+	kubectl apply -f ./kubernetes/flask-api-deployment.yaml
+	kubectl apply -f ./kubernetes/configmaps.yaml
+
 stop:
 	docker-compose down
 	docker system prune -f

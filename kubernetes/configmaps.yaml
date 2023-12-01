@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flask-ui-config
+data:
+  API_HOST: "APIHOST"
+  UM_HOST: "UMHOST"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flask-user-management-config
+data:
+  DB_HOST: "NOTSET"
+  DB_PORT: "5432"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flask-api-config
+data:
+  DB_HOST: "NOTSET"
+  DB_PORT: "5432"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+data:
+    POSTGRES_USER: user
+    POSTGRES_PASSWORD: password
+    POSTGRES_DB: database

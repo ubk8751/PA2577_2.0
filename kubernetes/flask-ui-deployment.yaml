@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-ui
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: flask-ui
+  template:
+    metadata:
+      labels:
+        app: flask-ui
+    spec:
+      containers:
+        - name: flask-ui
+          image: ubk8751/flask-ui:latest
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: flask-ui-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-ui-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: flask-ui
+  ports:
+    - port: 5000
+      targetPort: 5000
