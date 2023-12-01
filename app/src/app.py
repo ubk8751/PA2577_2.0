@@ -68,7 +68,9 @@ def load_user(user_id):
 UM_SERVICE_NAME = 'user-management-service'
 UM_PORT = 5001
 
-UM_IP = os.environ.get('UM_HOST')
+UM_IP = os.environ.get('UM_HOST',
+                       os.environ.get('FLASK_USER_MANAGEMENT_SERVICE_SERVICE_HOST',
+                                      'localhost'))
 
 UM_URL = f'http://{UM_IP}:{UM_PORT}'
 
@@ -137,6 +139,7 @@ def register():
         username = request.form.get('username')
         password = request.form.get('password')
         email = request.form.get('email')
+        app.logger.debug(f"UM_URL: {UM_URL}")
         response = requests.post(
             f'{UM_URL}/register',
             json={'username': username, 'password': password, 'email': email},
